@@ -13,4 +13,4 @@ $config = new Config($configParameters);
 $mysql = new Mysql($config);
 $queue = new Queue($mysql->getPDO());
 $storage = new AlbumStorage($config);
-$album = new Album($mysql->getPDO());
+$album = new Album($mysql->getPDO(), $storage);

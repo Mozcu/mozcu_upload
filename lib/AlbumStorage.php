@@ -13,7 +13,6 @@ class AlbumStorage extends Storage {
             $uploadData['image'] = $this->uploadImage($image, $folder);
         }
         //$uploadData['zip'] = $this->uploadZip($album['name'], $songs, $folder);
-        $uploadData['zip'] = "";
         $uploadData['static_directory'] = $folder;
         
         return $uploadData;
@@ -30,9 +29,10 @@ class AlbumStorage extends Storage {
             echo "Subiendo cancion: {$song['id']} - {$song['name']}\n";
             
             $songPath = $this->config->get('song_tmp_path') . "/" . $song['temporal_file_name'];
-            $trackNumber = sprintf("%02s", $song['trackNumber']);
+            //$trackNumber = sprintf("%02s", $song['trackNumber']);
             $sanitizedName = $this->sanitizeString($song['name']);
-            $name = "$folder/$trackNumber - $sanitizedName";
+            //$name = "$folder/$trackNumber - $sanitizedName";
+            $name = "$folder/$sanitizedName";
             
             $response = $this->upload($songPath, $name, 'mp3', 'audio/mpeg');
             if(is_null($response)) {

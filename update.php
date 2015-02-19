@@ -1,18 +1,6 @@
 <?php
 
-set_include_path("lib/googleapi/src/" . PATH_SEPARATOR . get_include_path());
-require_once 'Google/Client.php';
-require_once 'Google/Service/Storage.php';
-
-require_once 'lib/Mysql.php';
-require_once 'lib/Queue.php';
-require_once 'lib/Storage.php';
-require_once 'lib/Album.php';
-
-$mysql = new Mysql();
-$queue = new Queue($mysql->getPDO());
-$storage = new Storage();
-$album = new Album($mysql->getPDO(), $storage);
+require_once 'config/bootstrap.php';
 
 $pendingAlbum = $queue->getPendingAlbum(true);
 if(empty($pendingAlbum)) {
@@ -29,7 +17,7 @@ try {
     
     foreach($selectedSongs['remove'] as $song) {
         echo "Eliminando cancion: $song\n";
-        $storage->deleteFile($song);
+        $storage->delete($song);
     }
     $uploadData['songs'] = $storage->uploadSongs($selectedSongs['add'], $pendingAlbum['staticDirectory']);
     
@@ -41,25 +29,24 @@ try {
         $imagesToDelete = $storage->getImages($pendingAlbum);
         foreach($imagesToDelete as $imageToDelete) {
             echo "Eliminando imagen: {$imageToDelete['name']}\n";
-            $storage->deleteFile($imageToDelete['name']);
+            $storage->delete($imageToDelete['name']);
         }
         $uploadData['image'] = $storage->uploadImage($image, $pendingAlbum['staticDirectory']);
     }
     
     //Zip
-    if($deleteImage) {
+    /*if($deleteImage) {
         $uploadData['zip'] = $storage->updateZip($pendingAlbum, $selectedSongs, $image);
     } else {
         $uploadData['zip'] = $storage->updateZip($pendingAlbum, $selectedSongs);
-    }
-    
+    }*/
     
     $album->updateAlbum($pendingAlbum['id'], $uploadData);
     
     $queue->finnishPendingQueue($pendingAlbum['queue_id']);
     $storage->deleteTempFiles($songs);
     
-    echo 'ok';
+    echo "Disco actualizado correctamente\n";
     
 } catch(Exception $e) {
     echo $e->getMessage() . "\n";

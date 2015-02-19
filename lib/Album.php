@@ -25,15 +25,16 @@ class Album {
             $this->updateImage($albumId, $data['image']);
         }
         
-        $query = "UPDATE album SET is_active = 1, zipUrl = :zipUrl, static_zip_file_name = :zipName, ";
+        //$query = "UPDATE album SET is_active = 1, zipUrl = :zipUrl, static_zip_file_name = :zipName, ";
+        $query = "UPDATE album SET is_active = 1";
         if(isset($data['static_directory'])) {
-            $query .= "staticDirectory = :dirName";
+            $query .= ", staticDirectory = :dirName";
         }
         $query .= " WHERE id = :albumId";
         
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam('zipUrl', $data['zip']['url'], PDO::PARAM_STR);
-        $stmt->bindParam('zipName', $data['zip']['name'], PDO::PARAM_STR);
+        //$stmt->bindParam('zipUrl', $data['zip']['url'], PDO::PARAM_STR);
+        //$stmt->bindParam('zipName', $data['zip']['name'], PDO::PARAM_STR);
         $stmt->bindParam('albumId', $albumId, PDO::PARAM_INT);
         if(isset($data['static_directory'])) {
             $stmt->bindParam('dirName', $data['static_directory'], PDO::PARAM_STR);

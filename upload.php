@@ -1,6 +1,5 @@
 <?php
 
-// Composer
 require_once 'config/bootstrap.php';
 
 $pendingAlbum = $queue->getPendingAlbum();

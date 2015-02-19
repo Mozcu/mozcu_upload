@@ -75,7 +75,7 @@ class Storage {
         
     }
     
-    protected function delete($path) {
+    public function delete($path) {
         return $this->service->objects->delete($this->config->get('bucket_name'), $path);
     }
     
