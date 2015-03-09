@@ -20,8 +20,11 @@ class Storage {
      */
     protected $service;
     
+    /**
+     *
+     * @var string
+     */
     protected $tmpImagickDir;
-    protected $tmpCoverImg;
     
     protected static $audioTypes = array('audio/mpeg', 'audio/mpeg3', 'audio/x-mpeg-3', 'video/mpeg', 'video/x-mpeg', 'application/octet-stream');
     protected static $imageTypes = array('image/jpeg', 'image/pjpeg', 'image/png');

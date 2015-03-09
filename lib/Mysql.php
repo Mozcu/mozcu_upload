@@ -12,4 +12,8 @@ class Mysql {
 	public function getPDO() {
 		return $this->pdo;
 	}
+        
+        public function close() {
+            $this->pdo = null;
+        }
 }

@@ -4,6 +4,7 @@ require_once 'config/bootstrap.php';
 
 $pendingAlbum = $queue->getPendingAlbum();
 if(empty($pendingAlbum)) {
+    $mysql->close();
     exit();
 }
 
@@ -22,6 +23,8 @@ try {
     
     $queue->finnishPendingQueue($pendingAlbum['queue_id']);
     $storage->deleteTempFiles($songs, $image);
+    
+    $mysql->close();
     
     echo "Disco subido correctamente\n";
     

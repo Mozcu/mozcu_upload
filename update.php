@@ -4,6 +4,7 @@ require_once 'config/bootstrap.php';
 
 $pendingAlbum = $queue->getPendingAlbum(true);
 if(empty($pendingAlbum)) {
+    $mysql->close();
     exit();
 }
 
@@ -35,16 +36,21 @@ try {
     }
     
     //Zip
-    /*if($deleteImage) {
-        $uploadData['zip'] = $storage->updateZip($pendingAlbum, $selectedSongs, $image);
-    } else {
-        $uploadData['zip'] = $storage->updateZip($pendingAlbum, $selectedSongs);
-    }*/
+    if(isset($pendingAlbum['static_zip_file_name']) && !empty($pendingAlbum['static_zip_file_name'])) {
+        $storage->delete($pendingAlbum['static_zip_file_name']);
+    }
     
-    $album->updateAlbum($pendingAlbum['id'], $uploadData);
+    $album->updateAlbum($pendingAlbum['id'], $uploadData, true);
     
     $queue->finnishPendingQueue($pendingAlbum['queue_id']);
-    $storage->deleteTempFiles($songs);
+    
+    if(isset($image['temporal_file_name']) && !empty($image['temporal_file_name'])) {
+        $storage->deleteTempFiles($songs, $image);
+    } else {
+        $storage->deleteTempFiles($songs);
+    }
+    
+    $mysql->close();
     
     echo "Disco actualizado correctamente\n";
     
