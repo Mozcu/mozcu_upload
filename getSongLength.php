@@ -10,7 +10,7 @@ $config = new Config($configParameters);
 $mysql = new Mysql($config);
 
 // Process
-$stmt = $mysql->getPDO()->prepare("SELECT id, url FROM song WHERE `length` IS NULL OR `length` = '' LIMIT 10");
+$stmt = $mysql->getPDO()->prepare("SELECT id, url FROM song WHERE `length` IS NULL OR `length` = '' LIMIT 100");
 $stmt->execute();
 $songs = $stmt->fetchAll();
 
