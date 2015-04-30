@@ -17,6 +17,19 @@ foreach ($songsIterator as $fileinfo) {
 $imagesIterator = new FilesystemIterator($configParameters['image_tmp_path']);
 foreach ($imagesIterator as $fileinfo) {
     if (($now->getTimestamp() - $fileinfo->getMTime()) > 3600) {
-        unlink($fileinfo->getPathname());
+        if (is_dir($fileinfo->getPathname())) {
+            removeDir($fileinfo->getPathname());
+        } else {
+            unlink($fileinfo->getPathname());
+        }
     }   
+}
+
+
+function removeDir($path) {
+    $dirIterator = new FilesystemIterator($path);
+    foreach ($dirIterator as $fileinfo) {
+        unlink($fileinfo->getPathname());
+    }
+    rmdir($path);
 }
