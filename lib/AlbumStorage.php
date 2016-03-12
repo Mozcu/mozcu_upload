@@ -52,11 +52,14 @@ class AlbumStorage extends Storage {
         
         $date = new \DateTime;
         $dir = $date->getTimestamp() . uniqid();
-        if(!is_dir($this->config->get('image_tmp_path') . '/' . $dir)) {
-            mkdir($this->config->get('image_tmp_path') . '/' . $dir);
+        $fullpath = $this->config->get('image_tmp_path') . '/' . $dir; 
+        if(!is_dir($fullpath)) {
+            if (!mkdir($fullpath)) {
+                throw new Exception(sprintf('Error al intentar crear el directorio %s', $fullpath));
+            }
         }
         
-        $this->tmpImagickDir = $this->config->get('image_tmp_path') . '/' . $dir;
+        $this->tmpImagickDir = $fullpath;
         
         foreach($image['presentations'] as $pres) {
             $tmpPath = $this->config->get('image_tmp_path') . '/' . $image['temporal_file_name'];

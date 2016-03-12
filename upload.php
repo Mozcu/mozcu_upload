@@ -31,4 +31,6 @@ try {
 } catch(Exception $e) {
     echo $e->getMessage();
     $queue->moveToFailed($pendingAlbum['queue_id']);
+    $mysql->close();
+    exit();
 }

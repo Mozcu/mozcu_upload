@@ -25,7 +25,7 @@ class Album {
             $this->updateImage($albumId, $data['image']);
         }
         
-        $query = "UPDATE album SET is_active = 1";
+        $query = "UPDATE album SET status = 1";
         if($eraseZip) {
             $query .= ", zipUrl = :zipUrl, static_zip_file_name = :zipName";
         }
